@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ChatService } from '../chat.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,6 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app works!';
+  
+  constructor(chatService: ChatService) { }
 }
