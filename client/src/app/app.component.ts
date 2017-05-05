@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ChatService } from '../chat.service';
 
 import * as moment from 'moment';
+import 'rxjs/add/operator/throttleTime';
+
 
 @Component({
   selector: 'app-root',
@@ -23,9 +25,10 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.chatService
       .getMessages()
+      .throttleTime(1000)
       .subscribe((message: string) => {
         let currentTime = moment().format('hh:mm:ss a');
-        let messageWithTimestamp =  `${currentTime}: ${message}`;;
+        let messageWithTimestamp =  `${currentTime}: ${message}`;
         this.messages.push(messageWithTimestamp);
       });
   }
