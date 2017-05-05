@@ -7,7 +7,13 @@ import { ChatService } from '../chat.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app works!';
-  
-  constructor(chatService: ChatService) { }
+  message: string;
+
+  constructor(private chatService: ChatService) {
+  }
+
+  sendMessage() {
+    this.chatService.sendMessage(this.message);
+    this.message = '';
+  }
 }
