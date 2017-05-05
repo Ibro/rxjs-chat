@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { ChatService } from '../chat.service';
 
+import * as moment from 'moment';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -22,7 +24,9 @@ export class AppComponent {
     this.chatService
       .getMessages()
       .subscribe((message: string) => {
-        this.messages.push(message);
+        let currentTime = moment().format('hh:mm:ss a');
+        let messageWithTimestamp =  `${currentTime}: ${message}`;;
+        this.messages.push(messageWithTimestamp);
       });
   }
 }
