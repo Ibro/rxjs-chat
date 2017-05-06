@@ -3,7 +3,7 @@ import { ChatService } from '../chat.service';
 
 import * as moment from 'moment';
 import 'rxjs/add/operator/throttleTime';
-
+import 'rxjs/add/operator/distinctUntilChanged';
 
 @Component({
   selector: 'app-root',
@@ -25,6 +25,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.chatService
       .getMessages()
+      .distinctUntilChanged()
       .throttleTime(1000)
       .subscribe((message: string) => {
         let currentTime = moment().format('hh:mm:ss a');
