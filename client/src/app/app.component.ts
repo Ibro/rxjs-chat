@@ -4,6 +4,7 @@ import {ChatService} from '../chat.service';
 import * as moment from 'moment';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/skipWhile';
 import 'rxjs/add/operator/scan';
 import 'rxjs/add/operator/throttleTime';
 
@@ -15,8 +16,10 @@ import 'rxjs/add/operator/throttleTime';
 export class AppComponent implements OnInit {
   message: string;
   messages: string[] = [];
+  secretCode: string;
 
   constructor(private chatService: ChatService) {
+    this.secretCode = 'DONT TELL';
   }
 
   sendMessage() {
@@ -30,6 +33,7 @@ export class AppComponent implements OnInit {
       .distinctUntilChanged()
       .filter((message) => message.trim().length > 0)
       .throttleTime(1000)
+      .skipWhile((message) => message !== this.secretCode)
       .scan((acc: string, message: string, index: number) =>
           `${message}(${index + 1})`
         , 1)
