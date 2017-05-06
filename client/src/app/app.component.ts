@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { ChatService } from '../chat.service';
+import {Component, OnInit} from '@angular/core';
+import {ChatService} from '../chat.service';
 
 import * as moment from 'moment';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/scan';
 import 'rxjs/add/operator/throttleTime';
-
 
 @Component({
   selector: 'app-root',
@@ -28,11 +28,14 @@ export class AppComponent implements OnInit {
     this.chatService
       .getMessages()
       .distinctUntilChanged()
-      .filter((message) => message.trim().length > 0)    
+      .filter((message) => message.trim().length > 0)
       .throttleTime(1000)
+      .scan((acc: string, message: string, index: number) =>
+          `${message}(${index + 1})`
+        , 1)
       .subscribe((message: string) => {
-        let currentTime = moment().format('hh:mm:ss a');
-        let messageWithTimestamp =  `${currentTime}: ${message}`;
+        const currentTime = moment().format('hh:mm:ss a');
+        const messageWithTimestamp = `${currentTime}: ${message}`;
         this.messages.push(messageWithTimestamp);
       });
   }
